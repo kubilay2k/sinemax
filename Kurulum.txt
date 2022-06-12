@@ -1,0 +1,87 @@
+Gereklilikler
+1-xampp
+2.nodejs
+3.composer
+
+projeyi xampp\htdocs a taşıdıtan sonra
+
+common\config\main-local.php e gir
+proje klasöründe sinemaxx.sql var http://localhost/phpmyadmin de içe aktar yaparak ekleyebilirsin.
+alltaki bilgiyi kendine göre değiştir.
+            'dsn' => 'mysql:host=localhost;dbname=VERİTABANIİSMİ',
+
+ardından vscode kullanıyorsan terminalde proje konumunda şu komutu yaz:
+	composer update
+vscode kullanmıyorsan cmd den de proje klasörüne gelip aynı komutu yazabilirsin.
+
+ardından (bende yeri böyle) C:\Windows\System32\drivers\etc\hosts dosyasını herhangi bir editörle aç
+127.0.0.1			sinemax.test
+127.0.0.1			admin.sinemax.test
+kopyala yapıştırla üst kısmı ekle
+
+Sonrasında (bende yeri böyle) C:\xampp\apache\conf\extra\httpd-vhost.conf dosyasına gel, 
+aşağıdaki virtualhostlu kodu ekle içerisindeki DocumentRoot ve <Directory i kendi proje konumuna göre ayarla.
+
+	<VirtualHost *:80>
+        ServerName sinemax.test
+        DocumentRoot "C:/xampp/htdocs/sinemax/frontend/web/"
+           
+        <Directory "C:/xampp/htdocs/sinemax/frontend/web/">
+            # use mod_rewrite for pretty URL support
+            RewriteEngine on
+            # If a directory or a file exists, use the request directly
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            # Otherwise forward the request to index.php
+            RewriteRule . index.php
+
+            # use index.php as index file
+            DirectoryIndex index.php
+
+            # ...other settings...
+            # Apache 2.4
+            Require all granted
+               
+            ## Apache 2.2
+            # Order allow,deny
+            # Allow from all
+        </Directory>
+    </VirtualHost> 
+       
+    <VirtualHost *:80>
+        ServerName admin.sinemax.test
+        DocumentRoot "C:/xampp/htdocs/sinemax/backend/web/"
+           
+        <Directory "C:/xampp/htdocs/sinemax/backend/web/">
+            # use mod_rewrite for pretty URL support
+            RewriteEngine on
+            # If a directory or a file exists, use the request directly
+            RewriteCond %{REQUEST_FILENAME} !-f
+            RewriteCond %{REQUEST_FILENAME} !-d
+            # Otherwise forward the request to index.php
+            RewriteRule . index.php
+
+            # use index.php as index file
+            DirectoryIndex index.php
+
+            # ...other settings...
+            # Apache 2.4
+            Require all granted
+               
+            ## Apache 2.2
+            # Order allow,deny
+            # Allow from all
+        </Directory>
+    </VirtualHost>
+
+
+XAMPP DEN APACHE VE MYSQL İ KAPATIP AÇ.
+SONRASINDA 
+sinemax.test
+admin.sinemax.test
+
+domainlerinde projeni çalıştırabilirsin
+
+
+
+
